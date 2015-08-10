@@ -90,3 +90,26 @@ auth.settings.reset_password_requires_verification = True
 
 ## after defining tables, uncomment below to enable auditing
 # auth.enable_record_versioning(db)
+
+Filmes = db.define_table('filmes',
+    Field('titulo', 'string', label='Título'),
+    Field('lancamento', 'integer', label='Lançamento'),
+    Field('duracao', 'integer', label='Duração'),
+    Field('generos', 'list:string', label='Gêneros'),
+    Field('diretor', 'string', label='Diretor'),
+    Field('capa', 'upload', label='Capa/Cartaz')
+    )
+
+ItemsEstoque = db.define_table('items_estoque',
+    Field('filme', 'reference filmes', label='Filme'),
+    Field('quantidade', 'integer', label='Quantidade'),
+    Field('preco', 'float', label='Preço')
+    )
+
+Locacao = db.define_table('locacoes',
+    Field('filmes', 'list:reference filmes', label='Filme'),
+    Field('cliente', 'reference auth_user', label='Cliente'),
+    Field('data_locacao', 'datetime', label='Data de Locação'),
+    Field('data_devolucao', 'datetime', label='Data de Devolução'),
+    Field('multa', 'float', label='Multa')
+    )
