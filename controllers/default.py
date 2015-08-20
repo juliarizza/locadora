@@ -56,4 +56,38 @@ def call():
     """
     return service()
 
+def novo_filme():
+    form = SQLFORM(Filmes)
+    if form.process().accepted:
+        session.flash = 'Novo vídeo cadastrado: %s' % form.vars.titulo
+        redirect(URL('novo_filme'))
+    elif form.errors:
+        response.flash = 'Erros no formulário!'
+    else:
+        if not response.flash:
+            response.flash = 'Preencha o formulário!'
+    return dict(form=form)
 
+def estocar():
+    form = SQLFORM(ItemsEstoque)
+    if form.process().accepted:
+        session.flash = 'Filme adicionado ao estoque!'
+        redirect(URL('estocar'))
+    elif form.errors:
+        response.flash = 'Erros no formulário!'
+    else:
+        if not response.flash:
+            response.flash = 'Preencha o formulário!'
+    return dict(form=form)
+
+def locar():
+    form = SQLFORM(Locacao)
+    if form.process().accepted:
+        session.flash = 'Locação realizada!'
+        redirect(URL('locar'))
+    elif form.errors:
+        response.flash = 'Erros no formulário!'
+    else:
+        if not response.flash:
+            response.flash = 'Preencha o formulário!'
+    return dict(form=form)
