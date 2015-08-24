@@ -56,6 +56,8 @@ def call():
     """
     return service()
 
+## CREATE
+
 def novo_filme():
     form = SQLFORM(Filmes)
     if form.process().accepted:
@@ -91,3 +93,72 @@ def locar():
         if not response.flash:
             response.flash = 'Preencha o formulário!'
     return dict(form=form)
+
+## READ
+
+def ver_filmes():
+    filmes = db(Filmes).select()
+    return dict(filmes=filmes)
+
+def ver_estoque():
+    estoque = db(ItemsEstoque).select()
+    return dict(estoque=estoque)
+
+def ver_locacoes():
+    locacoes = db(Locacao).select()
+    return dict(locacoes=locacoes)
+
+## UPDATE
+
+def editar_filme():
+    form = SQLFORM(Filmes, request.args(0, cast=int))
+    if form.process().accepted:
+        session.flash = 'Filme atualizado: %s' % form.vars.titulo
+        redirect(URL('ver_filmes'))
+    elif form.errors:
+        response.flash = 'Erros no formulário!'
+    else:
+        if not response.flash:
+            response.flash = 'Preencha o formulário!'
+    return dict(form=form)
+
+def alterar_estoque():
+    form = SQLFORM(ItemsEstoque, request.args(0, cast=int))
+    if form.process().accepted:
+        session.flash = 'Estoque atualizado!'
+        redirect(URL('ver_estoque'))
+    elif form.errors:
+        response.flash = 'Erros no formulário!'
+    else:
+        if not response.flash:
+            response.flash = 'Preencha o formulário!'
+    return dict(form=form)
+
+def editar_locacao():
+    form = SQLFORM(Locacao, request.args(0, cast=int))
+    if form.process().accepted:
+        session.flash = 'Locação atualizada!'
+        redirect(URL('ver_locacoes'))
+    elif form.errors:
+        response.flash = 'Erros no formulário!'
+    else:
+        if not response.flash:
+            response.flash = 'Preencha o formulário!'
+    return dict(form=form)
+
+## DELETE
+
+def apagar_filme():
+    db(Filmes.id==request.args(0, cast=int)).delete()
+    session.flash = 'Filme apagado!'
+    redirect(URL('ver_filmes'))
+
+def apagar_estoque():
+    db(ItemsEstoque.id==request.args(0, cast=int)).delete()
+    session.flash = 'Item apagado!'
+    redirect(URL('ver_estoque'))
+
+def apagar_locacao():
+    db(Locacao.id==request.args(0, cast=int)).delete()
+    session.flash = 'Locação apagada!'
+    redirect(URL('ver_locacoes'))
