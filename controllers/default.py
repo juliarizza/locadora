@@ -97,8 +97,8 @@ def locar():
 ## READ
 
 def ver_filmes():
-    filmes = db(Filmes).select()
-    return dict(filmes=filmes)
+    grid = SQLFORM.grid(Filmes)
+    return dict(grid=grid)
 
 def ver_estoque():
     estoque = db(ItemsEstoque).select()
