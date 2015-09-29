@@ -58,6 +58,7 @@ def call():
 
 ## CREATE
 
+@auth.requires_membership('funcionario')
 def novo_filme():
     form = SQLFORM(Filmes)
     if form.process().accepted:
@@ -70,6 +71,7 @@ def novo_filme():
             response.flash = 'Preencha o formulário!'
     return dict(form=form)
 
+@auth.requires_membership('funcionario')
 def estocar():
     form = SQLFORM(ItemsEstoque)
     if form.process().accepted:
@@ -82,6 +84,7 @@ def estocar():
             response.flash = 'Preencha o formulário!'
     return dict(form=form)
 
+@auth.requires_membership('funcionario')
 def locar():
     form = SQLFORM(Locacao)
     if form.process().accepted:
@@ -100,16 +103,19 @@ def ver_filmes():
     grid = SQLFORM.grid(Filmes)
     return dict(grid=grid)
 
+@auth.requires_membership('funcionario')
 def ver_estoque():
     estoque = db(ItemsEstoque).select()
     return dict(estoque=estoque)
 
+@auth.requires_membership('funcionario')
 def ver_locacoes():
     locacoes = db(Locacao).select()
     return dict(locacoes=locacoes)
 
 ## UPDATE
 
+@auth.requires_membership('funcionario')
 def editar_filme():
     form = SQLFORM(Filmes, request.args(0, cast=int))
     if form.process().accepted:
@@ -122,6 +128,7 @@ def editar_filme():
             response.flash = 'Preencha o formulário!'
     return dict(form=form)
 
+@auth.requires_membership('funcionario')
 def alterar_estoque():
     form = SQLFORM(ItemsEstoque, request.args(0, cast=int))
     if form.process().accepted:
@@ -134,6 +141,7 @@ def alterar_estoque():
             response.flash = 'Preencha o formulário!'
     return dict(form=form)
 
+@auth.requires_membership('funcionario')
 def editar_locacao():
     form = SQLFORM(Locacao, request.args(0, cast=int))
     if form.process().accepted:
@@ -148,16 +156,19 @@ def editar_locacao():
 
 ## DELETE
 
+@auth.requires_membership('funcionario')
 def apagar_filme():
     db(Filmes.id==request.args(0, cast=int)).delete()
     session.flash = 'Filme apagado!'
     redirect(URL('ver_filmes'))
 
+@auth.requires_membership('funcionario')
 def apagar_estoque():
     db(ItemsEstoque.id==request.args(0, cast=int)).delete()
     session.flash = 'Item apagado!'
     redirect(URL('ver_estoque'))
 
+@auth.requires_membership('funcionario')
 def apagar_locacao():
     db(Locacao.id==request.args(0, cast=int)).delete()
     session.flash = 'Locação apagada!'
